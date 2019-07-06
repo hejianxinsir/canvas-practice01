@@ -1,57 +1,153 @@
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
+var lineWidth = 3
 autoSizeCanvas(canvas)
-listenToMouse(canvas)
+listenToUser(canvas)
 
-function listenToMouse(canvas){
+function listenToUser(canvas){
 
   var using = false
   var lastPoint = {"x": undefined, "y": undefined}
-  var eraserEnabled = false
-  eraser.onclick = function(){
-    eraserEnabled = true
-    actions.className = 'actions x'
-  }
-  brush.onclick = function(){
-    eraserEnabled = false
-    actions.className = 'actions'
-  }
 
-  canvas.onmousedown = function(a){
-    var x = a.clientX
-    var y = a.clientY
-    using = true
-    if(eraserEnabled){
-      context.clearRect(x-5,y-5,20,20)
-    }else{
-      lastPoint = {"x":x,"y":y}
+  //特性检测，检测的是特性
+  if( document.body.ontouchstart !== undefined ){
+    var eraserEnabled = false
+
+    var lineWidth = 3
+
+    brush.onclick = function(){
+      eraserEnabled = false
+      brush.classList.add('active')
+      eraser.classList.remove('active')
     }
+    eraser.onclick = function(){
+      eraserEnabled = true
+      eraser.classList.add('active')
+      brush.classList.remove('active')
+    }
+
+    black.onclick = function(){
+      context.fillStyle = 'black'
+      context.strokeStyle = 'black'
+      black.classList.add('active')
+      red.classList.remove('active')
+      green.classList.remove('active')
+      brown.classList.remove('active')
+    }
+    red.onclick = function(){
+      context.fillStyle = 'red'
+      context.strokeStyle = 'red'
+      red.classList.add('active')
+      green.classList.remove('active')
+      brown.classList.remove('active')
+      black.classList.remove('active')
+    }
+    green.onclick = function(){
+      context.fillStyle = 'green'
+      context.strokeStyle = 'green'
+      green.classList.add('active')
+      red.classList.remove('active')
+      brown.classList.remove('active')
+      black.classList.remove('active')
+    }
+    brown.onclick = function(){
+      context.fillStyle = 'brown'
+      context.strokeStyle = 'brown' 
+      brown.classList.add('active')
+      red.classList.remove('active')
+      green.classList.remove('active')
+      black.classList.remove('active')
+    }
+
     
-  }
-  canvas.onmousemove = function(a){
-    var x = a.clientX
-    var y = a.clientY
+    // eraser.onclick = function(){
+    //   eraserEnabled = true
+    //   actions.className = 'actions x'
+    // }
+    // brush.onclick = function(){
+    //   eraserEnabled = false
+    //   actions.className = 'actions'
+    // }
 
-    if(!using){return}
-
-    if(eraserEnabled){
+    //触屏设备
+    canvas.ontouchstart = function(a){
+      var x = a.touches[0].clientX
+      var y = a.touches[0].clientY
+      using = true
+      if(eraserEnabled){
         context.clearRect(x-5,y-5,20,20)
-    }else{
-      var newPoint = {"x":x,"y":y}
-        drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
-        lastPoint = newPoint
+      }else{
+        lastPoint = {"x":x,"y":y}
+      }
     }
-    
-  }
-  canvas.onmouseup = function(){
-    using = false
-  }
+    canvas.ontouchmove = function(a){
+      var x = a.touches[0].clientX
+      var y = a.touches[0].clientY
 
+      if(!using){return}
+
+      if(eraserEnabled){
+          context.clearRect(x-5,y-5,20,20)
+      }else{
+        var newPoint = {"x":x,"y":y}
+          drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+          lastPoint = newPoint
+      }
+    }
+    canvas.ontouchend = function(){
+      using = false
+    }
+  }else{
+    //非触屏设备
+    var eraserEnabled = false
+    // eraser.onclick = function(){
+    //   eraserEnabled = true
+    //   actions.className = 'actions x'
+    // }
+    // brush.onclick = function(){
+    //   eraserEnabled = false
+    //   actions.className = 'actions'
+    // }
+
+    canvas.onmousedown = function(a){
+      var x = a.clientX
+      var y = a.clientY
+      using = true
+      if(eraserEnabled){
+        context.clearRect(x-5,y-5,20,20)
+      }else{
+        lastPoint = {"x":x,"y":y}
+      }
+    }
+    canvas.onmousemove = function(a){
+      var x = a.clientX
+      var y = a.clientY
+
+      if(!using){return}
+
+      if(eraserEnabled){
+          context.clearRect(x-5,y-5,20,20)
+      }else{
+        var newPoint = {"x":x,"y":y}
+          drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+          lastPoint = newPoint
+      }
+    }
+    canvas.onmouseup = function(){
+      using = false
+    }
+  }
 }
 
-
-
-
+thin.onclick = function(){
+  lineWidth = 3
+}
+medium.onclick = function(){
+  lineWidth = 7
+}
+thick.onclick = function(){
+  lineWidth = 12
+}
 
 
 
@@ -84,7 +180,7 @@ function drawLine(x1,y1,x2,y2){
   context.beginPath()
   context.moveTo(x1,y1)
   context.lineTo(x2,y2)
-  context.lineWidth = 2
+  context.lineWidth = lineWidth
   context.stroke()
   context.closePath()
 }

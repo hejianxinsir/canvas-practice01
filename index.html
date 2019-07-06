@@ -2,16 +2,34 @@
 <html lang="zh-Hans">
 <head>
 	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 	<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 	<div id="actions" class="actions">
-		<button id="eraser" class="eraser">erase</button>
-		<button id="brush" class="brush">brush</button>
+		<!-- <button id="eraser" class="eraser">erase</button>
+		<button id="brush" class="brush">brush</button> -->
+		<svg id="brush" class="brush active" aria-hidden="true">
+    		<use xlink:href="#icon-pen"></use>
+		</svg>
+		<svg id="eraser" class="eraser" aria-hidden="true">
+    		<use xlink:href="#icon-Eraser"></use>
+		</svg>
 	</div>
-	
-
+	<ol class="colors">
+		<li id="black" class="black active"></li>
+		<li id="red" class="red"></li>
+		<li id="green" class="green"></li>
+		<li id="brown" class="brown"></li>
+	</ol>	
+	<ol class="size">
+		<li id="thin" class="thin"></li>
+		<li id="medium" class="medium"></li>
+		<li id="thick" class="thick"></li>
+	</ol>	
 	<canvas id="canvas" class="canvas" width=300 height=300></div>
+
+	<script src="//at.alicdn.com/t/font_1281012_0h8cpcl2rue7.js"></script>
 	<script src="./js/main.js"></script>
 </body>
 </html>
