@@ -1,0 +1,10 @@
+
+*{margin: 0; padding: 0;}
+ul.ol{list-style: none;}
+body{margin:0;}
+
+.canvas{
+	height: 100vh;
+	background: pink;
+	position: relative;
+}
