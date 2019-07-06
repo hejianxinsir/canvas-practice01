@@ -1,17 +1,52 @@
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+autoSizeCanvas(canvas)
+listenToMouse(canvas)
 
-var div = document.getElementById('canvas')
+function listenToMouse(canvas){
 
-div.onmousedown = function(aaa){
-  var x = aaa.clientX
-  var y = aaa.clientY
-  console.log(x,y)
+  var using = false
+  var lastPoint = {"x": undefined, "y": undefined}
+  var eraserEnabled = false
+  eraser.onclick = function(){
+    eraserEnabled = true
+    actions.className = 'actions x'
+  }
+  brush.onclick = function(){
+    eraserEnabled = false
+    actions.className = 'actions'
+  }
 
-  var divB = document.createElement('div')
-  divB.style = "width: 6px; height: 6px; background: black"+
-    "position: absolute; top: "+
-    (y-3)+"px;"+"left: "+(x-3)+"px;"+"border-radius: 3px;"
-  
-  div.appendChild(divB)
+  canvas.onmousedown = function(a){
+    var x = a.clientX
+    var y = a.clientY
+    using = true
+    if(eraserEnabled){
+      context.clearRect(x-5,y-5,20,20)
+    }else{
+      lastPoint = {"x":x,"y":y}
+    }
+    
+  }
+  canvas.onmousemove = function(a){
+    var x = a.clientX
+    var y = a.clientY
+
+    if(!using){return}
+
+    if(eraserEnabled){
+        context.clearRect(x-5,y-5,20,20)
+    }else{
+      var newPoint = {"x":x,"y":y}
+        drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y)
+        lastPoint = newPoint
+    }
+    
+  }
+  canvas.onmouseup = function(){
+    using = false
+  }
+
 }
 
 
@@ -21,59 +56,51 @@ div.onmousedown = function(aaa){
 
 
 
+//页面宽度
+function autoSizeCanvas(canvas){
+  viewPortSize()
+  //如果用户更改了视口宽度，那就重新获取宽高。
+  window.onresize = function(){
+    viewPortSize()
+  }
+  function viewPortSize(){
+    var pageWidth = document.documentElement.clientWidth
+    var pageHeight = document.documentElement.clientHeight
+    canvas.width = pageWidth
+    canvas.height = pageHeight
+  }
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//怎么画点？
+// 画圆函数
 function drawCircle(x,y,radius){
-	context.beginPath()
-	context.fillStyle = 'pink'
-	context.arc(x,y,1,0,Math.PI*2) //前两个是位置，中间是半径-radius，后面是角度
-	context.fill()
+  context.beginPath()
+  context.arc(x,y,radius,0,Math.PI*2);
+  context.fill()
 }
 
-//怎么画线/连线？
+//划线函数
 function drawLine(x1,y1,x2,y2){
-	context.beginPath()
-	context.strokeStyle = 'black'
-	context.moveTo(x1,y1)
-	context.lineWidth = 5
-	context.lineTo(x2,y2)
-	context.stroke()
-	context.closePath()
+  context.beginPath()
+  context.moveTo(x1,y1)
+  context.lineTo(x2,y2)
+  context.lineWidth = 2
+  context.stroke()
+  context.closePath()
 }
 
+// 画矩形
+// context.fillStyle = 'red'
+// context.fillRect(100,100,300,300)
+// context.strokeStyle = 'green'
+// context.strokeRect(20,20,30,30)
 
+// 画三角形
+// context.fillStyle = 'red'
+// context.beginPath()
+// context.moveTo(10,10)
+// context.lineTo(30,30)
+// context.lineTo(100,40)
+// context.fill()
+
+//canvas 可以在点与点之间划线
