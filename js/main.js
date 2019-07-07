@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 var lineWidth = 3
@@ -9,12 +10,34 @@ function listenToUser(canvas){
   var using = false
   var lastPoint = {"x": undefined, "y": undefined}
 
+  brush.onclick = function(){
+    eraserEnabled = false
+    brush.classList.add('active')
+    eraser.classList.remove('active')
+  }
+  eraser.onclick = function(){
+    eraserEnabled = true
+    eraser.classList.add('active')
+    brush.classList.remove('active')
+  }
+  clearAll.onclick = function(){
+    context.clearRect(0,0,canvas.width,canvas.height)
+  }
+  download.onclick = function(){
+    var url = canvas.toDataURL('image/png')
+    var a = document.createElement('a')
+    document.body.appendChild(a)
+    a.href = url
+    a.download = '我的画作'
+    a.target = '_blank'
+    a.click()
+  }
+
   //特性检测，检测的是特性
   if( document.body.ontouchstart !== undefined ){
     var eraserEnabled = false
 
-    var lineWidth = 3
-
+    change()
     brush.onclick = function(){
       eraserEnabled = false
       brush.classList.add('active')
@@ -25,49 +48,6 @@ function listenToUser(canvas){
       eraser.classList.add('active')
       brush.classList.remove('active')
     }
-
-    black.onclick = function(){
-      context.fillStyle = 'black'
-      context.strokeStyle = 'black'
-      black.classList.add('active')
-      red.classList.remove('active')
-      green.classList.remove('active')
-      brown.classList.remove('active')
-    }
-    red.onclick = function(){
-      context.fillStyle = 'red'
-      context.strokeStyle = 'red'
-      red.classList.add('active')
-      green.classList.remove('active')
-      brown.classList.remove('active')
-      black.classList.remove('active')
-    }
-    green.onclick = function(){
-      context.fillStyle = 'green'
-      context.strokeStyle = 'green'
-      green.classList.add('active')
-      red.classList.remove('active')
-      brown.classList.remove('active')
-      black.classList.remove('active')
-    }
-    brown.onclick = function(){
-      context.fillStyle = 'brown'
-      context.strokeStyle = 'brown' 
-      brown.classList.add('active')
-      red.classList.remove('active')
-      green.classList.remove('active')
-      black.classList.remove('active')
-    }
-
-    
-    // eraser.onclick = function(){
-    //   eraserEnabled = true
-    //   actions.className = 'actions x'
-    // }
-    // brush.onclick = function(){
-    //   eraserEnabled = false
-    //   actions.className = 'actions'
-    // }
 
     //触屏设备
     canvas.ontouchstart = function(a){
@@ -100,14 +80,7 @@ function listenToUser(canvas){
   }else{
     //非触屏设备
     var eraserEnabled = false
-    // eraser.onclick = function(){
-    //   eraserEnabled = true
-    //   actions.className = 'actions x'
-    // }
-    // brush.onclick = function(){
-    //   eraserEnabled = false
-    //   actions.className = 'actions'
-    // }
+    change()
 
     canvas.onmousedown = function(a){
       var x = a.clientX
@@ -149,7 +122,42 @@ thick.onclick = function(){
   lineWidth = 12
 }
 
+//画笔与橡皮擦切换
+function change(){
 
+  black.onclick = function(){
+    context.fillStyle = 'black'
+    context.strokeStyle = 'black'
+    black.classList.add('active')
+    red.classList.remove('active')
+    green.classList.remove('active')
+    brown.classList.remove('active')
+  }
+  red.onclick = function(){
+    context.fillStyle = 'red'
+    context.strokeStyle = 'red'
+    red.classList.add('active')
+    green.classList.remove('active')
+    brown.classList.remove('active')
+    black.classList.remove('active')
+  }
+  green.onclick = function(){
+    context.fillStyle = 'green'
+    context.strokeStyle = 'green'
+    green.classList.add('active')
+    red.classList.remove('active')
+    brown.classList.remove('active')
+    black.classList.remove('active')
+  }
+  brown.onclick = function(){
+    context.fillStyle = 'brown'
+    context.strokeStyle = 'brown' 
+    brown.classList.add('active')
+    red.classList.remove('active')
+    green.classList.remove('active')
+    black.classList.remove('active')
+  }
+}
 
 
 //页面宽度

@@ -9,9 +9,24 @@ ul,ol{list-style: none;padding: 0; margin: 0;}
    fill: currentColor;
    overflow: hidden;
 }
+.icon {
+   width: 1em; height: 1em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}
+.icon {
+   width: 1em; height: 1em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}
 canvas{
   background: white;
   display: block;
+  position: fiexd;
+  top: 0;
+  left: 0;
 }
 .actions{
   position: fixed;
@@ -23,6 +38,9 @@ canvas{
 	height: 1.5em;
 	transition: all 0.2s;
 	margin: 0 7px;
+}
+.actions > #clearAll{
+	margin-top: -15px;
 }
 .actions > #eraser{
 	width: 1.7em;
